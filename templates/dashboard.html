@@ -6,204 +6,352 @@
 <section class="py-12">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Header -->
-        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8">
-            <div>
-                <h1 class="text-3xl font-bold text-text-primary">
-                    Olá, {{ user.first_name|default:user.username }}!
-                </h1>
-                <p class="text-gray-600 mt-1">Bem-vindo ao seu painel Ginga</p>
-            </div>
-            <a href="#" class="mt-4 sm:mt-0 inline-flex items-center px-4 py-2 bg-primary text-white font-semibold rounded-xl hover:bg-primary-600 transition-colors">
-                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                </svg>
-                Editar Perfil
-            </a>
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-text-primary">
+                Olá, {{ user.first_name|default:user.username }}!
+            </h1>
+            <p class="text-gray-600 mt-1">Bem-vindo ao seu painel Ginga</p>
         </div>
 
-        <!-- 3 Column Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Grid Layout: 2 + 1 columns -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             
-            <!-- Coluna 1: Profile Info -->
-            <div class="bg-surface rounded-xl shadow-soft p-6 border border-gray-100">
-                <h2 class="text-lg font-bold text-text-primary mb-4 flex items-center">
-                    <svg class="w-5 h-5 mr-2 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                    </svg>
-                    Meu Perfil
-                </h2>
-
-                <!-- Avatar & Name -->
-                <div class="text-center mb-6">
-                    <div class="inline-flex items-center justify-center w-20 h-20 bg-primary/10 rounded-full mb-3">
-                        {% if profile and profile.avatar %}
-                        <img src="{{ profile.avatar.url }}" alt="Avatar" class="w-20 h-20 rounded-full object-cover">
-                        {% else %}
-                        <span class="text-2xl font-bold text-primary">
-                            {{ user.first_name|default:user.username|slice:":1"|upper }}
-                        </span>
-                        {% endif %}
+            <!-- LEFT COLUMN (col-span-2) -->
+            <div class="lg:col-span-2 space-y-6">
+                
+                <!-- Vagas Recomendadas -->
+                <div class="bg-surface rounded-xl shadow-soft p-6 border border-gray-100">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-lg font-bold text-text-primary flex items-center">
+                            <svg class="w-5 h-5 mr-2 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                            </svg>
+                            Vagas Recomendadas
+                        </h2>
+                        <a href="#" class="text-secondary text-sm font-semibold hover:text-secondary-600 transition-colors">
+                            Ver todas →
+                        </a>
                     </div>
-                    <h3 class="font-semibold text-text-primary">{{ user.get_full_name|default:user.username }}</h3>
-                    <p class="text-gray-500 text-sm">@{{ user.username }}</p>
+
+                    <!-- Jobs List -->
+                    <div class="space-y-4">
+                        <!-- Job Card 1 (placeholder) -->
+                        <div class="border border-gray-100 rounded-xl p-4 hover:shadow-sm transition-shadow">
+                            <div class="flex items-start justify-between">
+                                <div class="flex items-start space-x-4">
+                                    <div class="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center">
+                                        <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-semibold text-text-primary">Desenvolvedor Python Sênior</h3>
+                                        <p class="text-gray-500 text-sm">TechCorp Brasil</p>
+                                        <div class="flex items-center space-x-3 mt-2">
+                                            <span class="text-xs text-gray-500 flex items-center">
+                                                <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                                </svg>
+                                                Remoto
+                                            </span>
+                                            <span class="text-xs text-primary font-medium">R$ 12.000 - R$ 18.000</span>
+                                        </div>
+                                        <div class="flex flex-wrap gap-2 mt-3">
+                                            <span class="px-2 py-1 bg-secondary/10 text-secondary text-xs rounded-full">Python</span>
+                                            <span class="px-2 py-1 bg-secondary/10 text-secondary text-xs rounded-full">Django</span>
+                                            <span class="px-2 py-1 bg-secondary/10 text-secondary text-xs rounded-full">PostgreSQL</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="px-3 py-1 bg-highlight/20 text-highlight-700 text-xs font-semibold rounded-full">
+                                    Nova
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Job Card 2 (placeholder) -->
+                        <div class="border border-gray-100 rounded-xl p-4 hover:shadow-sm transition-shadow">
+                            <div class="flex items-start justify-between">
+                                <div class="flex items-start space-x-4">
+                                    <div class="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center">
+                                        <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-semibold text-text-primary">Full Stack Developer</h3>
+                                        <p class="text-gray-500 text-sm">StartupXYZ</p>
+                                        <div class="flex items-center space-x-3 mt-2">
+                                            <span class="text-xs text-gray-500 flex items-center">
+                                                <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                                </svg>
+                                                São Paulo, SP
+                                            </span>
+                                            <span class="text-xs text-primary font-medium">R$ 8.000 - R$ 12.000</span>
+                                        </div>
+                                        <div class="flex flex-wrap gap-2 mt-3">
+                                            <span class="px-2 py-1 bg-secondary/10 text-secondary text-xs rounded-full">React</span>
+                                            <span class="px-2 py-1 bg-secondary/10 text-secondary text-xs rounded-full">Node.js</span>
+                                            <span class="px-2 py-1 bg-secondary/10 text-secondary text-xs rounded-full">TypeScript</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Empty state if no jobs -->
+                        <!-- 
+                        <div class="text-center py-8">
+                            <div class="inline-flex items-center justify-center w-16 h-16 bg-gray-100 rounded-full mb-4">
+                                <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                </svg>
+                            </div>
+                            <p class="text-gray-500">Nenhuma vaga recomendada no momento</p>
+                            <a href="#" class="inline-block mt-3 text-secondary font-semibold hover:text-secondary-600 transition-colors">
+                                Explorar vagas →
+                            </a>
+                        </div>
+                        -->
+                    </div>
                 </div>
 
-                <!-- Bio -->
-                <div class="mb-6">
-                    <h4 class="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-2">Bio</h4>
-                    {% if profile and profile.bio %}
-                    <p class="text-gray-600 text-sm leading-relaxed">{{ profile.bio }}</p>
+                <!-- Status de Candidaturas -->
+                <div class="bg-surface rounded-xl shadow-soft p-6 border border-gray-100">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-lg font-bold text-text-primary flex items-center">
+                            <svg class="w-5 h-5 mr-2 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                            </svg>
+                            Status de Candidaturas
+                        </h2>
+                        <a href="#" class="text-secondary text-sm font-semibold hover:text-secondary-600 transition-colors">
+                            Ver todos →
+                        </a>
+                    </div>
+
+                    {% if tech_projects %}
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        {% for project in tech_projects %}
+                        <div class="bg-background rounded-xl p-4 hover:shadow-sm transition-shadow border border-gray-50">
+                            <div class="flex items-start justify-between mb-3">
+                                <span class="px-2 py-1 bg-primary/10 text-primary text-xs font-medium rounded-full">
+                                    {{ project.get_project_type_display }}
+                                </span>
+                                {% if project.url %}
+                                <a href="{{ project.url }}" target="_blank" class="text-gray-400 hover:text-secondary transition-colors">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                    </svg>
+                                </a>
+                                {% endif %}
+                            </div>
+                            <h3 class="font-semibold text-text-primary mb-1">{{ project.name }}</h3>
+                            {% if project.description %}
+                            <p class="text-gray-500 text-sm line-clamp-2">{{ project.description|truncatewords:12 }}</p>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
                     {% else %}
-                    <p class="text-gray-400 text-sm italic">Nenhuma bio adicionada</p>
+                    <div class="text-center py-8">
+                        <div class="inline-flex items-center justify-center w-16 h-16 bg-gray-100 rounded-full mb-4">
+                            <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                            </svg>
+                        </div>
+                        <p class="text-gray-500 mb-3">Você ainda não se candidatou a nenhuma vaga</p>
+                        
+                    </div>
                     {% endif %}
                 </div>
 
-                <!-- Location -->
-                {% if profile and profile.city %}
-                <div class="mb-6">
-                    <h4 class="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-2">Localização</h4>
-                    <p class="text-gray-600 text-sm flex items-center">
-                        <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                        </svg>
-                        {{ profile.city }}
-                    </p>
-                </div>
-                {% endif %}
-
-                <!-- Links -->
-                <div>
-                    <h4 class="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">Links</h4>
-                    <div class="space-y-2">
-                        {% if profile and profile.github_url %}
-                        <a href="{{ profile.github_url }}" target="_blank" class="flex items-center text-sm text-gray-600 hover:text-secondary transition-colors">
-                            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                            </svg>
-                            GitHub
-                        </a>
-                        {% endif %}
-                        {% if profile and profile.linkedin_url %}
-                        <a href="{{ profile.linkedin_url }}" target="_blank" class="flex items-center text-sm text-gray-600 hover:text-secondary transition-colors">
-                            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                            </svg>
-                            LinkedIn
-                        </a>
-                        {% endif %}
-                        {% if not profile or not profile.github_url and not profile.linkedin_url %}
-                        <p class="text-gray-400 text-sm italic">Nenhum link adicionado</p>
-                        {% endif %}
-                    </div>
-                </div>
             </div>
 
-            <!-- Coluna 2: Professional Experience -->
-            <div class="bg-surface rounded-xl shadow-soft p-6 border border-gray-100">
-                <h2 class="text-lg font-bold text-text-primary mb-4 flex items-center">
-                    <svg class="w-5 h-5 mr-2 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                    </svg>
-                    Experiência Profissional
-                </h2>
+            <!-- RIGHT COLUMN (col-span-1) -->
+            <div class="lg:col-span-1 space-y-6">
+                
+                <!-- Resumo do Perfil -->
+                <div class="bg-surface rounded-xl shadow-soft p-6 border border-gray-100">
+                    <h2 class="text-lg font-bold text-text-primary mb-4 flex items-center">
+                        <svg class="w-5 h-5 mr-2 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </svg>
+                        Meu Perfil
+                    </h2>
 
-                {% if experiences %}
-                <div class="space-y-4">
-                    {% for exp in experiences %}
-                    <div class="border-l-2 border-secondary pl-4 py-1">
-                        <h3 class="font-semibold text-text-primary">{{ exp.role }}</h3>
-                        <p class="text-gray-600 text-sm">{{ exp.company }}</p>
-                        <p class="text-gray-400 text-xs mt-1">
-                            {{ exp.start_date|date:"M Y" }} - 
-                            {% if exp.end_date %}
-                                {{ exp.end_date|date:"M Y" }}
+                    <!-- Avatar & Name -->
+                    <div class="text-center mb-6">
+                        <div class="inline-flex items-center justify-center w-20 h-20 bg-primary/10 rounded-full mb-3">
+                            {% if profile and profile.avatar %}
+                            <img src="{{ profile.avatar.url }}" alt="Avatar" class="w-20 h-20 rounded-full object-cover">
                             {% else %}
-                                <span class="text-primary font-medium">Atual</span>
-                            {% endif %}
-                        </p>
-                        {% if exp.description %}
-                        <p class="text-gray-500 text-sm mt-2 line-clamp-2">{{ exp.description|truncatewords:20 }}</p>
-                        {% endif %}
-                    </div>
-                    {% endfor %}
-                </div>
-
-                {% if experiences_count > 5 %}
-                <a href="#" class="inline-block mt-4 text-secondary text-sm font-semibold hover:text-secondary-600 transition-colors">
-                    Ver todas ({{ experiences_count }}) →
-                </a>
-                {% endif %}
-
-                {% else %}
-                <div class="text-center py-8">
-                    <div class="inline-flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full mb-3">
-                        <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                        </svg>
-                    </div>
-                    <p class="text-gray-500 text-sm">Nenhuma experiência adicionada</p>
-                    <a href="#" class="inline-block mt-3 text-secondary text-sm font-semibold hover:text-secondary-600 transition-colors">
-                        Adicionar experiência →
-                    </a>
-                </div>
-                {% endif %}
-            </div>
-
-            <!-- Coluna 3: Tech Projects -->
-            <div class="bg-surface rounded-xl shadow-soft p-6 border border-gray-100">
-                <h2 class="text-lg font-bold text-text-primary mb-4 flex items-center">
-                    <svg class="w-5 h-5 mr-2 text-highlight-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
-                    </svg>
-                    Projetos Técnicos
-                </h2>
-
-                {% if tech_projects %}
-                <div class="space-y-4">
-                    {% for project in tech_projects %}
-                    <div class="bg-background rounded-lg p-4 hover:shadow-sm transition-shadow">
-                        <div class="flex items-start justify-between">
-                            <div class="flex-1">
-                                <h3 class="font-semibold text-text-primary">{{ project.name }}</h3>
-                                <span class="inline-block mt-1 px-2 py-0.5 bg-primary/10 text-primary text-xs font-medium rounded-full">
-                                    {{ project.get_project_type_display }}
-                                </span>
-                            </div>
-                            {% if project.url %}
-                            <a href="{{ project.url }}" target="_blank" class="text-gray-400 hover:text-secondary transition-colors">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
-                                </svg>
-                            </a>
+                            <span class="text-2xl font-bold text-primary">
+                                {{ user.first_name|default:user.username|slice:":1"|upper }}{{ user.last_name|slice:":1"|upper }}
+                            </span>
                             {% endif %}
                         </div>
-                        {% if project.description %}
-                        <p class="text-gray-500 text-sm mt-2 line-clamp-2">{{ project.description|truncatewords:15 }}</p>
+                        <h3 class="font-semibold text-text-primary">{{ user.get_full_name|default:user.username }}</h3>
+                        <p class="text-gray-500 text-sm">{{ user.email }}</p>
+                        {% if profile and profile.city %}
+                        <p class="text-gray-400 text-xs mt-1 flex items-center justify-center">
+                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                            </svg>
+                            {{ profile.city }}
+                        </p>
                         {% endif %}
                     </div>
-                    {% endfor %}
-                </div>
 
-                {% if tech_projects_count > 5 %}
-                <a href="#" class="inline-block mt-4 text-secondary text-sm font-semibold hover:text-secondary-600 transition-colors">
-                    Ver todos ({{ tech_projects_count }}) →
-                </a>
-                {% endif %}
+                    <!-- Bio -->
+                    {% if profile and profile.bio %}
+                    <p class="text-gray-600 text-sm text-center mb-4 line-clamp-3">{{ profile.bio }}</p>
+                    {% endif %}
 
-                {% else %}
-                <div class="text-center py-8">
-                    <div class="inline-flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full mb-3">
-                        <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
-                        </svg>
-                    </div>
-                    <p class="text-gray-500 text-sm">Nenhum projeto adicionado</p>
-                    <a href="#" class="inline-block mt-3 text-secondary text-sm font-semibold hover:text-secondary-600 transition-colors">
-                        Adicionar projeto →
+                    <a href="{% url 'accounts:profile_edit' %}" class="block w-full text-center px-4 py-2 border border-primary text-primary font-semibold rounded-xl hover:bg-primary hover:text-white transition-colors text-sm">
+                        Editar Perfil
                     </a>
                 </div>
-                {% endif %}
+
+                <!-- Completude do Perfil -->
+                <div class="bg-surface rounded-xl shadow-soft p-6 border border-gray-100">
+                    <h2 class="text-lg font-bold text-text-primary mb-4 flex items-center">
+                        <svg class="w-5 h-5 mr-2 text-highlight-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        Perfil
+                    </h2>
+
+                    {% with profile_completion=0 %}
+                    {% if profile %}
+                        {% with has_bio=profile.bio|length|default:0 has_avatar=profile.avatar|default:0 has_city=profile.city|length|default:0 has_github=profile.github_url|length|default:0 has_linkedin=profile.linkedin_url|length|default:0 %}
+                        {% endwith %}
+                    {% endif %}
+
+                    <!-- Progress Bar -->
+                    <div class="mb-4">
+                        <div class="flex justify-between text-sm mb-2">
+                            <span class="text-gray-600">Progresso</span>
+                            <span class="font-semibold text-primary">
+                                {% if profile and profile.bio and profile.city %}75%{% elif profile and profile.bio or profile.city %}50%{% else %}25%{% endif %}
+                            </span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                            <div class="bg-primary h-2.5 rounded-full transition-all duration-500" 
+                                 style="width: {% if profile and profile.bio and profile.city and profile.github_url %}100{% elif profile and profile.bio and profile.city %}75{% elif profile and profile.bio or profile.city %}50{% else %}25{% endif %}%">
+                            </div>
+                        </div>
+                    </div>
+                    {% endwith %}
+
+                    <!-- Checklist -->
+                    <ul class="space-y-3">
+                        <li class="flex items-center text-sm">
+                            {% if user.first_name and user.last_name %}
+                            <svg class="w-5 h-5 mr-3 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="text-gray-600">Nome completo</span>
+                            {% else %}
+                            <svg class="w-5 h-5 mr-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <span class="text-gray-400">Adicionar nome completo</span>
+                            {% endif %}
+                        </li>
+                        <li class="flex items-center text-sm">
+                            {% if profile and profile.bio %}
+                            <svg class="w-5 h-5 mr-3 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="text-gray-600">Bio adicionada</span>
+                            {% else %}
+                            <svg class="w-5 h-5 mr-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <span class="text-gray-400">Adicionar bio</span>
+                            {% endif %}
+                        </li>
+                        <li class="flex items-center text-sm">
+                            {% if profile and profile.city %}
+                            <svg class="w-5 h-5 mr-3 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="text-gray-600">Localização</span>
+                            {% else %}
+                            <svg class="w-5 h-5 mr-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <span class="text-gray-400">Adicionar localização</span>
+                            {% endif %}
+                        </li>
+                        <li class="flex items-center text-sm">
+                            {% if profile and profile.github_url %}
+                            <svg class="w-5 h-5 mr-3 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="text-gray-600">GitHub conectado</span>
+                            {% else %}
+                            <svg class="w-5 h-5 mr-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <span class="text-gray-400">Conectar GitHub</span>
+                            {% endif %}
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Links Sociais -->
+                <div class="bg-surface rounded-xl shadow-soft p-6 border border-gray-100">
+                    <h2 class="text-lg font-bold text-text-primary mb-4 flex items-center">
+                        <svg class="w-5 h-5 mr-2 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
+                        </svg>
+                        Links Sociais
+                    </h2>
+
+                    <div class="space-y-3">
+                        {% if profile and profile.github_url %}
+                        <a href="{{ profile.github_url }}" target="_blank" class="flex items-center p-3 bg-background rounded-xl hover:bg-gray-100 transition-colors group">
+                            <svg class="w-5 h-5 mr-3 text-gray-600" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                            <span class="text-sm text-gray-600 group-hover:text-text-primary transition-colors">GitHub</span>
+                            <svg class="w-4 h-4 ml-auto text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                            </svg>
+                        </a>
+                        {% else %}
+                        <div class="flex items-center p-3 bg-background rounded-xl border-2 border-dashed border-gray-200">
+                            <svg class="w-5 h-5 mr-3 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                            <span class="text-sm text-gray-400">Conectar GitHub</span>
+                        </div>
+                        {% endif %}
+
+                        {% if profile and profile.linkedin_url %}
+                        <a href="{{ profile.linkedin_url }}" target="_blank" class="flex items-center p-3 bg-background rounded-xl hover:bg-gray-100 transition-colors group">
+                            <svg class="w-5 h-5 mr-3 text-[#0077B5]" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                            </svg>
+                            <span class="text-sm text-gray-600 group-hover:text-text-primary transition-colors">LinkedIn</span>
+                            <svg class="w-4 h-4 ml-auto text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                            </svg>
+                        </a>
+                        {% else %}
+                        <div class="flex items-center p-3 bg-background rounded-xl border-2 border-dashed border-gray-200">
+                            <svg class="w-5 h-5 mr-3 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                            </svg>
+                            <span class="text-sm text-gray-400">Conectar LinkedIn</span>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
             </div>
 
         </div>

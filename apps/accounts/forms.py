@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 
-from .models import User
+from .models import User, Profile
 
 
 class SignUpForm(UserCreationForm):
@@ -44,3 +44,74 @@ class SignUpForm(UserCreationForm):
         if commit:
             user.save()
         return user
+
+
+class UserUpdateForm(forms.ModelForm):
+    """Form for updating user basic information."""
+
+    first_name = forms.CharField(
+        max_length=150,
+        required=True,
+        label='Nome',
+        widget=forms.TextInput(attrs={
+            'class': 'w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all',
+            'placeholder': 'Seu nome'
+        })
+    )
+    last_name = forms.CharField(
+        max_length=150,
+        required=True,
+        label='Sobrenome',
+        widget=forms.TextInput(attrs={
+            'class': 'w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all',
+            'placeholder': 'Seu sobrenome'
+        })
+    )
+
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name')
+
+
+class ProfileUpdateForm(forms.ModelForm):
+    """Form for updating user profile."""
+
+    class Meta:
+        model = Profile
+        fields = ('bio', 'avatar', 'city', 'contact_info', 'github_url', 'linkedin_url')
+        widgets = {
+            'bio': forms.Textarea(attrs={
+                'class': 'w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all',
+                'placeholder': 'Conte um pouco sobre você...',
+                'rows': 4
+            }),
+            'avatar': forms.FileInput(attrs={
+                'class': 'hidden',
+                'accept': 'image/*'
+            }),
+            'city': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all',
+                'placeholder': 'Ex: São Paulo, SP'
+            }),
+            'contact_info': forms.Textarea(attrs={
+                'class': 'w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all',
+                'placeholder': 'Telefone, email alternativo, etc.',
+                'rows': 2
+            }),
+            'github_url': forms.URLInput(attrs={
+                'class': 'w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all',
+                'placeholder': 'https://github.com/seu-usuario'
+            }),
+            'linkedin_url': forms.URLInput(attrs={
+                'class': 'w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all',
+                'placeholder': 'https://linkedin.com/in/seu-perfil'
+            }),
+        }
+        labels = {
+            'bio': 'Biografia',
+            'avatar': 'Foto de Perfil',
+            'city': 'Cidade',
+            'contact_info': 'Informações de Contato',
+            'github_url': 'GitHub',
+            'linkedin_url': 'LinkedIn',
+        }
