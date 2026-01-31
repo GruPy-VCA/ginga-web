@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+
+{% block title %}Ginga - Portal de Vagas e Portfólios Tech{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="bg-gradient-to-br from-primary to-primary-600 text-white py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center">
+            <h1 class="text-4xl md:text-6xl font-bold mb-6">
+                Bem-vindo ao <span class="text-highlight">Ginga</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-primary-100 mb-8 max-w-3xl mx-auto">
+                A plataforma que conecta profissionais de tecnologia às melhores oportunidades do mercado.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="#vagas" class="bg-highlight text-primary font-bold px-8 py-4 rounded-xl hover:bg-highlight-400 transition-colors shadow-soft">
+                    Ver Vagas Abertas
+                </a>
+                <a href="#portfolio" class="bg-surface text-primary font-bold px-8 py-4 rounded-xl hover:bg-gray-100 transition-colors shadow-soft">
+                    Criar Meu Portfólio
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Modules Section -->
+<section class="py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold text-text-primary mb-4">
+                Nossos Módulos
+            </h2>
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                Descubra as ferramentas que vão impulsionar sua carreira tech.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- GingaVagas Card -->
+            <div id="vagas" class="bg-surface rounded-2xl shadow-soft p-8 hover:shadow-lg transition-shadow border border-gray-100">
+                <div class="flex items-center mb-6">
+                    <div class="bg-secondary-50 p-4 rounded-xl">
+                        <svg class="w-8 h-8 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <span class="bg-highlight text-primary text-xs font-bold px-3 py-1 rounded-full">
+                            Vagas Abertas
+                        </span>
+                    </div>
+                </div>
+                <h3 class="text-2xl font-bold text-text-primary mb-4">GingaVagas</h3>
+                <p class="text-gray-600 mb-6">
+                    Encontre as melhores oportunidades de emprego em tecnologia. 
+                    Empresas de todo o Brasil publicam vagas com salários transparentes e processo seletivo humanizado.
+                </p>
+                <ul class="space-y-3 mb-8">
+                    <li class="flex items-center text-gray-600">
+                        <svg class="w-5 h-5 text-primary mr-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        Vagas com faixa salarial
+                    </li>
+                    <li class="flex items-center text-gray-600">
+                        <svg class="w-5 h-5 text-primary mr-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        Feedback após cada processo
+                    </li>
+                    <li class="flex items-center text-gray-600">
+                        <svg class="w-5 h-5 text-primary mr-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        Tags de tecnologias
+                    </li>
+                </ul>
+                <a href="#" class="inline-flex items-center text-secondary font-semibold hover:text-secondary-600 transition-colors">
+                    Explorar Vagas
+                    <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                    </svg>
+                </a>
+            </div>
+
+            <!-- GingaPort Card -->
+            <div id="portfolio" class="bg-surface rounded-2xl shadow-soft p-8 hover:shadow-lg transition-shadow border border-gray-100">
+                <div class="flex items-center mb-6">
+                    <div class="bg-primary-50 p-4 rounded-xl">
+                        <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <span class="bg-primary-100 text-primary text-xs font-bold px-3 py-1 rounded-full">
+                            Portfólio
+                        </span>
+                    </div>
+                </div>
+                <h3 class="text-2xl font-bold text-text-primary mb-4">GingaPort</h3>
+                <p class="text-gray-600 mb-6">
+                    Crie seu portfólio profissional e mostre suas habilidades ao mundo. 
+                    Destaque sua experiência, projetos e conquistas de forma elegante.
+                </p>
+                <ul class="space-y-3 mb-8">
+                    <li class="flex items-center text-gray-600">
+                        <svg class="w-5 h-5 text-primary mr-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        Perfil profissional completo
+                    </li>
+                    <li class="flex items-center text-gray-600">
+                        <svg class="w-5 h-5 text-primary mr-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        Showcase de projetos tech
+                    </li>
+                    <li class="flex items-center text-gray-600">
+                        <svg class="w-5 h-5 text-primary mr-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        Integração GitHub e LinkedIn
+                    </li>
+                </ul>
+                <a href="#" class="inline-flex items-center text-secondary font-semibold hover:text-secondary-600 transition-colors">
+                    Criar Portfólio
+                    <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="bg-primary py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            <div>
+                <div class="text-4xl font-bold text-highlight mb-2">500+</div>
+                <div class="text-primary-100">Vagas Publicadas</div>
+            </div>
+            <div>
+                <div class="text-4xl font-bold text-highlight mb-2">1.200+</div>
+                <div class="text-primary-100">Profissionais</div>
+            </div>
+            <div>
+                <div class="text-4xl font-bold text-highlight mb-2">150+</div>
+                <div class="text-primary-100">Empresas</div>
+            </div>
+            <div>
+                <div class="text-4xl font-bold text-highlight mb-2">89%</div>
+                <div class="text-primary-100">Taxa de Satisfação</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-3xl md:text-4xl font-bold text-text-primary mb-4">
+            Pronto para dar o próximo passo na sua carreira?
+        </h2>
+        <p class="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+            Junte-se à comunidade Ginga e conecte-se com as melhores oportunidades do mercado tech brasileiro.
+        </p>
+        <a href="#" class="bg-primary text-white font-bold px-8 py-4 rounded-xl hover:bg-primary-600 transition-colors shadow-soft inline-block">
+            Começar Agora
+        </a>
+    </div>
+</section>
+{% endblock %}

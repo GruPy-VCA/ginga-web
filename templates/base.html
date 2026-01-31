@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Ginga{% endblock %}</title>
+    
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        // Primary (Verde Floresta)
+                        primary: {
+                            DEFAULT: '#004B23',
+                            50: '#E6F2EC',
+                            100: '#CCE5D9',
+                            200: '#99CBB3',
+                            300: '#66B18D',
+                            400: '#339767',
+                            500: '#004B23',
+                            600: '#003C1C',
+                            700: '#002D15',
+                            800: '#001E0E',
+                            900: '#000F07',
+                        },
+                        // Secondary (Azul Digital)
+                        secondary: {
+                            DEFAULT: '#0077B6',
+                            50: '#E6F3F9',
+                            100: '#CCE7F3',
+                            200: '#99CFE7',
+                            300: '#66B7DB',
+                            400: '#339FCF',
+                            500: '#0077B6',
+                            600: '#005F92',
+                            700: '#00476D',
+                            800: '#002F49',
+                            900: '#001824',
+                        },
+                        // Highlight (Amarelo Energia)
+                        highlight: {
+                            DEFAULT: '#FFD60A',
+                            50: '#FFFBE6',
+                            100: '#FFF7CC',
+                            200: '#FFEF99',
+                            300: '#FFE766',
+                            400: '#FFDF33',
+                            500: '#FFD60A',
+                            600: '#CCAB08',
+                            700: '#998006',
+                            800: '#665504',
+                            900: '#332B02',
+                        },
+                        // Background
+                        background: '#F8FAFC',
+                        // Surface
+                        surface: '#FFFFFF',
+                        // Text Principal
+                        'text-primary': '#1E293B',
+                    },
+                    borderRadius: {
+                        'xl': '1rem',
+                        '2xl': '1.5rem',
+                    },
+                    boxShadow: {
+                        'soft': '0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04)',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="bg-background text-text-primary min-h-screen">
+    <!-- Navbar -->
+    <nav class="bg-surface shadow-soft sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="{% url 'home' %}" class="flex items-center space-x-2">
+                        <span class="text-2xl font-bold text-primary">Ginga</span>
+                    </a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="#vagas" class="text-text-primary hover:text-primary font-medium transition-colors">
+                        GingaVagas
+                    </a>
+                    <a href="#portfolio" class="text-text-primary hover:text-primary font-medium transition-colors">
+                        GingaPort
+                    </a>
+                    <a href="{% url 'admin:index' %}" class="bg-primary text-white px-4 py-2 rounded-xl hover:bg-primary-600 transition-colors font-medium">
+                        Admin
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-primary text-white mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Ginga</h3>
+                    <p class="text-primary-100">
+                        Conectando talentos e oportunidades no mundo tech.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Módulos</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#vagas" class="text-primary-100 hover:text-white transition-colors">GingaVagas</a></li>
+                        <li><a href="#portfolio" class="text-primary-100 hover:text-white transition-colors">GingaPort</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Contato</h4>
+                    <p class="text-primary-100">
+                        Desenvolvido com ❤️ usando Django e Tailwind CSS
+                    </p>
+                </div>
+            </div>
+            <div class="border-t border-primary-400 mt-8 pt-8 text-center text-primary-100">
+                <p>&copy; 2026 Ginga. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>
