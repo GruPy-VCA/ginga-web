@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}Criar Conta - Ginga{% endblock %}
+
+{% block content %}
+<section class="py-20">
+    <div class="max-w-md mx-auto px-4">
+        <div class="bg-surface rounded-2xl shadow-soft p-8 border border-gray-100">
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-bold text-text-primary mb-2">Criar Conta</h1>
+                <p class="text-gray-600">Junte-se à comunidade Ginga</p>
+            </div>
+
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
+                
+                {% for field in form %}
+                <div>
+                    <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-text-primary mb-2">
+                        {{ field.label }}
+                    </label>
+                    <input 
+                        type="{{ field.field.widget.input_type }}"
+                        name="{{ field.name }}"
+                        id="{{ field.id_for_label }}"
+                        {% if field.value %}value="{{ field.value }}"{% endif %}
+                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all {% if field.errors %}border-red-500{% endif %}"
+                        {% if field.field.required %}required{% endif %}
+                    >
+                    {% if field.help_text %}
+                    <p class="mt-1 text-xs text-gray-500">{{ field.help_text|safe }}</p>
+                    {% endif %}
+                    {% if field.errors %}
+                    <p class="mt-1 text-sm text-red-600">{{ field.errors|join:", " }}</p>
+                    {% endif %}
+                </div>
+                {% endfor %}
+
+                <button type="submit" class="w-full bg-primary text-white font-bold py-3 px-4 rounded-xl hover:bg-primary-600 transition-colors">
+                    Criar Conta
+                </button>
+            </form>
+
+            <p class="mt-6 text-center text-gray-600">
+                Já tem uma conta? 
+                <a href="{% url 'login' %}" class="text-secondary font-semibold hover:text-secondary-600">
+                    Entrar
+                </a>
+            </p>
+        </div>
+    </div>
+</section>
+{% endblock %}

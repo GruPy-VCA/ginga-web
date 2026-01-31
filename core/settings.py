@@ -116,6 +116,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Custom User Model
 AUTH_USER_MODEL = 'accounts.User'
 
+# Login/Logout redirects
+LOGIN_REDIRECT_URL = 'dashboard'
+LOGOUT_REDIRECT_URL = 'home'
+LOGIN_URL = 'login'
+
 # Django Taggit
 TAGGIT_CASE_INSENSITIVE = True
 

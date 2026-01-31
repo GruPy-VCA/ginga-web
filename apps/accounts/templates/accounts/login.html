@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}Entrar - Ginga{% endblock %}
+
+{% block content %}
+<section class="py-20">
+    <div class="max-w-md mx-auto px-4">
+        <div class="bg-surface rounded-2xl shadow-soft p-8 border border-gray-100">
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-bold text-text-primary mb-2">Entrar</h1>
+                <p class="text-gray-600">Acesse sua conta Ginga</p>
+            </div>
+
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
+                
+                <div>
+                    <label for="id_username" class="block text-sm font-medium text-text-primary mb-2">
+                        Usuário
+                    </label>
+                    <input 
+                        type="text"
+                        name="username"
+                        id="id_username"
+                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                        required
+                        autofocus
+                    >
+                </div>
+
+                <div>
+                    <label for="id_password" class="block text-sm font-medium text-text-primary mb-2">
+                        Senha
+                    </label>
+                    <input 
+                        type="password"
+                        name="password"
+                        id="id_password"
+                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                        required
+                    >
+                </div>
+
+                {% if form.errors %}
+                <div class="bg-red-50 text-red-600 p-4 rounded-xl text-sm">
+                    Usuário ou senha inválidos. Tente novamente.
+                </div>
+                {% endif %}
+
+                <button type="submit" class="w-full bg-primary text-white font-bold py-3 px-4 rounded-xl hover:bg-primary-600 transition-colors">
+                    Entrar
+                </button>
+            </form>
+
+            <p class="mt-6 text-center text-gray-600">
+                Não tem uma conta? 
+                <a href="{% url 'accounts:signup' %}" class="text-secondary font-semibold hover:text-secondary-600">
+                    Criar conta
+                </a>
+            </p>
+        </div>
+    </div>
+</section>
+{% endblock %}
