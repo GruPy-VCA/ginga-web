@@ -1,8 +1,11 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.db.models import Count
+from django.http import JsonResponse
 from django.urls import reverse_lazy
+from django.views import View
 from django.views.generic import CreateView, UpdateView, ListView
+from taggit.models import Tag
 
 from .forms import JobForm
 from .models import Job
@@ -94,3 +97,18 @@ class JobListView(LoginRequiredMixin, ListView):
         context['active_jobs'] = jobs.filter(is_active=True).count()
         context['total_applications'] = sum(job.applications_count for job in jobs)
         return context
+
+
+class TagListView(LoginRequiredMixin, View):
+    """API endpoint to return existing tags as JSON for Tagify autocomplete."""
+
+    def get(self, request, *args, **kwargs):
+        query = request.GET.get('q', '')
+        tags = Tag.objects.all()
+
+        if query:
+            tags = tags.filter(name__icontains=query)
+
+        # Return tags in Tagify format
+        tag_list = [{'value': tag.name} for tag in tags.order_by('name')[:20]]
+        return JsonResponse(tag_list, safe=False)

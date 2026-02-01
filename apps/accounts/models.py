@@ -31,6 +31,11 @@ class Profile(models.Model):
     )
     city = models.CharField(max_length=100, blank=True, verbose_name='City')
     contact_info = models.TextField(blank=True, verbose_name='Contact Information')
+    skills = models.TextField(
+        blank=True,
+        verbose_name='Skills',
+        help_text='Comma-separated list of skills'
+    )
     github_url = models.URLField(blank=True, verbose_name='GitHub URL')
     linkedin_url = models.URLField(blank=True, verbose_name='LinkedIn URL')
     is_portfolio_public = models.BooleanField(

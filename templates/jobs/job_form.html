@@ -113,15 +113,15 @@
                     <label for="id_tags_input" class="block text-sm font-medium text-text-primary mb-2">
                         {{ form.tags_input.label }}
                     </label>
-                    {{ form.tags_input }}
-                    <p class="text-xs text-gray-500 mt-1">{{ form.tags_input.help_text }}</p>
+                    <input type="text" name="tags_input" id="id_tags_input" 
+                           value="{{ form.tags_input.value|default:'' }}"
+                           class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                           placeholder="Ex: Python, Django, PostgreSQL, Docker">
+                    <p class="text-xs text-gray-500 mt-1">Digite e pressione Enter ou vírgula para adicionar tecnologias</p>
                     {% if form.tags_input.errors %}
                     <p class="text-sm text-red-600 mt-1">{{ form.tags_input.errors|join:", " }}</p>
                     {% endif %}
                 </div>
-
-                <!-- Tags Preview -->
-                <div id="tags-preview" class="flex flex-wrap gap-2 mt-3"></div>
             </div>
 
             <!-- Status -->
@@ -150,24 +150,54 @@
     </div>
 </section>
 
+{% endblock %}
+
+{% block extra_scripts %}
 <script>
-    // Tags preview
+    // Initialize Tagify for technologies
     const tagsInput = document.getElementById('id_tags_input');
-    const tagsPreview = document.getElementById('tags-preview');
+    
+    const tagify = new Tagify(tagsInput, {
+        whitelist: [],
+        dropdown: {
+            maxItems: 10,
+            enabled: 1,
+            closeOnSelect: false,
+            highlightFirst: true
+        },
+        placeholder: 'Digite e pressione Enter...',
+        delimiters: ',| ',
+        originalInputValueFormat: valuesArr => valuesArr.map(item => item.value).join(', ')
+    });
 
-    function updateTagsPreview() {
-        const value = tagsInput.value;
-        const tags = value.split(',').map(tag => tag.trim()).filter(tag => tag);
-        
-        tagsPreview.innerHTML = tags.map(tag => 
-            `<span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary">
-                ${tag}
-            </span>`
-        ).join('');
-    }
+    // Fetch existing tags for autocomplete
+    let controller;
+    tagify.on('input', function(e) {
+        const value = e.detail.value;
+        tagify.whitelist = null;
 
-    tagsInput.addEventListener('input', updateTagsPreview);
-    // Initial preview
-    updateTagsPreview();
+        // Abort previous request
+        controller && controller.abort();
+        controller = new AbortController();
+
+        fetch(`{% url 'jobs:tags_api' %}?q=${value}`, { signal: controller.signal })
+            .then(response => response.json())
+            .then(function(newWhitelist) {
+                tagify.whitelist = newWhitelist;
+                tagify.dropdown.show(value);
+            })
+            .catch(err => {
+                if (err.name !== 'AbortError') {
+                    console.error(err);
+                }
+            });
+    });
+
+    // Load initial whitelist
+    fetch('{% url "jobs:tags_api" %}')
+        .then(response => response.json())
+        .then(function(whitelist) {
+            tagify.whitelist = whitelist;
+        });
 </script>
 {% endblock %}

@@ -1,7 +1,8 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
+from django.forms import inlineformset_factory
 
-from .models import User, Profile
+from .models import User, Profile, ProfessionalExperience, Education
 
 
 class SignUpForm(UserCreationForm):
@@ -115,3 +116,113 @@ class ProfileUpdateForm(forms.ModelForm):
             'github_url': 'GitHub',
             'linkedin_url': 'LinkedIn',
         }
+
+
+class ProfessionalExperienceForm(forms.ModelForm):
+    """Form for professional experience."""
+
+    class Meta:
+        model = ProfessionalExperience
+        fields = ('company', 'role', 'start_date', 'end_date', 'description')
+        widgets = {
+            'company': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all',
+                'placeholder': 'Nome da empresa',
+            }),
+            'role': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all',
+                'placeholder': 'Cargo/Função',
+            }),
+            'start_date': forms.DateInput(attrs={
+                'class': 'w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all',
+                'type': 'date',
+            }),
+            'end_date': forms.DateInput(attrs={
+                'class': 'w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all',
+                'type': 'date',
+            }),
+            'description': forms.Textarea(attrs={
+                'class': 'w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all',
+                'placeholder': 'Descreva suas responsabilidades e conquistas...',
+                'rows': 3,
+            }),
+        }
+        labels = {
+            'company': 'Empresa',
+            'role': 'Cargo',
+            'start_date': 'Data de Início',
+            'end_date': 'Data de Término',
+            'description': 'Descrição',
+        }
+
+
+class EducationForm(forms.ModelForm):
+    """Form for education."""
+
+    class Meta:
+        model = Education
+        fields = ('institution', 'course', 'status', 'start_date', 'end_date')
+        widgets = {
+            'institution': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all',
+                'placeholder': 'Nome da instituição',
+            }),
+            'course': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all',
+                'placeholder': 'Nome do curso',
+            }),
+            'status': forms.Select(attrs={
+                'class': 'w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all',
+            }),
+            'start_date': forms.DateInput(attrs={
+                'class': 'w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all',
+                'type': 'date',
+            }),
+            'end_date': forms.DateInput(attrs={
+                'class': 'w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all',
+                'type': 'date',
+            }),
+        }
+        labels = {
+            'institution': 'Instituição',
+            'course': 'Curso',
+            'status': 'Status',
+            'start_date': 'Data de Início',
+            'end_date': 'Data de Término',
+        }
+
+
+class SkillsForm(forms.Form):
+    """Form for managing skills/competencies."""
+
+    skills = forms.CharField(
+        required=False,
+        label='Competências Técnicas',
+        widget=forms.TextInput(attrs={
+            'class': 'w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all',
+            'placeholder': 'Ex: Python, Django, JavaScript, React',
+        }),
+        help_text='Separe as competências por vírgula',
+    )
+
+
+# Formsets
+ProfessionalExperienceFormSet = inlineformset_factory(
+    Profile,
+    ProfessionalExperience,
+    form=ProfessionalExperienceForm,
+    extra=0,
+    min_num=0,
+    validate_min=False,
+    can_delete=True,
+)
+
+EducationFormSet = inlineformset_factory(
+    Profile,
+    Education,
+    form=EducationForm,
+    extra=0,
+    min_num=0,
+    validate_min=False,
+    can_delete=True,
+)

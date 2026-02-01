@@ -67,14 +67,34 @@ uv run manage.py migrate
 
 ```
 
-### 5. Executar o Servidor
+### 5. Carregar Dados Iniciais
+
+Carregue as tecnologias para o sistema de autocomplete de vagas e competências:
+
+```bash
+uv run python manage.py load_techs
+```
+
+Este comando é **idempotente** - pode ser executado múltiplas vezes sem criar duplicatas. Ele popula o banco com 100 tecnologias categorizadas (linguagens, frameworks, bancos de dados, DevOps, etc.) para uso no autocomplete.
+
+### 6. Executar o Servidor
 
 Para iniciar o projeto localmente, utilize o comando:
 
 ```bash
 uv run manage.py runserver
-
 ```
+
+---
+
+## Comandos de Gerenciamento
+
+| Comando | Descrição |
+|---------|-----------|
+| `uv run python manage.py load_techs` | Carrega 100 tecnologias para autocomplete (idempotente) |
+| `uv run python manage.py migrate` | Executa migrações do banco de dados |
+| `uv run python manage.py createsuperuser` | Cria um usuário administrador |
+| `uv run ruff check` | Verifica qualidade do código |
 
 ---
 
