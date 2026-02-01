@@ -1,0 +1,285 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ job.title }} - {{ job.company.name }} - Ginga{% endblock %}
+
+{% block content %}
+<section class="py-12">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Back Link -->
+        <a href="{% url 'jobs:list' %}" class="inline-flex items-center text-gray-500 hover:text-primary transition-colors mb-6">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+            </svg>
+            Voltar para vagas
+        </a>
+
+        <!-- Messages -->
+        {% if messages %}
+        <div class="mb-6 space-y-2">
+            {% for message in messages %}
+            <div class="p-4 rounded-xl {% if message.tags == 'success' %}bg-green-50 text-green-800 border border-green-200{% elif message.tags == 'error' %}bg-red-50 text-red-800 border border-red-200{% elif message.tags == 'warning' %}bg-yellow-50 text-yellow-800 border border-yellow-200{% else %}bg-blue-50 text-blue-800 border border-blue-200{% endif %}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Main Content -->
+            <div class="lg:col-span-2 space-y-6">
+                <!-- Job Header -->
+                <div class="bg-surface rounded-xl shadow-soft p-6 border border-gray-100">
+                    <div class="flex items-start space-x-4">
+                        {% if job.company.logo %}
+                        <img src="{{ job.company.logo.url }}" alt="{{ job.company.name }}" class="w-16 h-16 rounded-xl object-cover">
+                        {% else %}
+                        <div class="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center">
+                            <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                            </svg>
+                        </div>
+                        {% endif %}
+                        <div class="flex-1">
+                            <div class="flex items-start justify-between">
+                                <div>
+                                    <h1 class="text-2xl font-bold text-text-primary">{{ job.title }}</h1>
+                                    <p class="text-gray-600 text-lg">{{ job.company.name }}</p>
+                                </div>
+                                {% if not job.is_active %}
+                                <span class="px-3 py-1 bg-gray-100 text-gray-600 text-sm font-medium rounded-full">
+                                    Vaga Inativa
+                                </span>
+                                {% endif %}
+                            </div>
+
+                            <div class="flex flex-wrap items-center gap-4 mt-4">
+                                {% if job.salary_range %}
+                                <span class="inline-flex items-center text-primary font-semibold">
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    {{ job.salary_range }}
+                                </span>
+                                {% endif %}
+                                <span class="inline-flex items-center text-gray-500">
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    Publicada há {{ job.created_at|timesince }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% if job.tags.all %}
+                    <div class="mt-6 pt-6 border-t border-gray-100">
+                        <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">Tecnologias</h3>
+                        <div class="flex flex-wrap gap-2">
+                            {% for tag in job.tags.all %}
+                            <a href="{% url 'jobs:list' %}?tag={{ tag.name }}"
+                               class="px-3 py-1 bg-secondary/10 text-secondary text-sm rounded-full hover:bg-secondary/20 transition-colors">
+                                {{ tag.name }}
+                            </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Description -->
+                <div class="bg-surface rounded-xl shadow-soft p-6 border border-gray-100">
+                    <h2 class="text-lg font-bold text-text-primary mb-4 flex items-center">
+                        <svg class="w-5 h-5 mr-2 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        Descrição da Vaga
+                    </h2>
+                    <div class="prose prose-gray max-w-none">
+                        {{ job.description|linebreaks }}
+                    </div>
+                </div>
+
+                {% if job.requirements %}
+                <!-- Requirements -->
+                <div class="bg-surface rounded-xl shadow-soft p-6 border border-gray-100">
+                    <h2 class="text-lg font-bold text-text-primary mb-4 flex items-center">
+                        <svg class="w-5 h-5 mr-2 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+                        </svg>
+                        Requisitos
+                    </h2>
+                    <div class="prose prose-gray max-w-none">
+                        {{ job.requirements|linebreaks }}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Sidebar -->
+            <div class="lg:col-span-1 space-y-6">
+                <!-- Apply Card -->
+                <div class="bg-surface rounded-xl shadow-soft p-6 border border-gray-100 sticky top-24">
+                    {% if is_owner %}
+                    <!-- Owner Actions -->
+                    <div class="text-center">
+                        <div class="inline-flex items-center justify-center w-12 h-12 bg-primary/10 rounded-full mb-4">
+                            <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="font-bold text-text-primary mb-2">Esta é sua vaga</h3>
+                        <p class="text-gray-500 text-sm mb-4">Gerencie esta vaga no painel de empresas.</p>
+                        <a href="{% url 'jobs:edit' job.pk %}"
+                           class="w-full inline-flex items-center justify-center px-4 py-3 bg-primary text-white font-semibold rounded-xl hover:bg-primary-600 transition-colors">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                            </svg>
+                            Editar Vaga
+                        </a>
+                    </div>
+
+                    {% elif already_applied %}
+                    <!-- Already Applied -->
+                    <div class="text-center">
+                        <div class="inline-flex items-center justify-center w-12 h-12 bg-green-100 rounded-full mb-4">
+                            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                        </div>
+                        <h3 class="font-bold text-text-primary mb-2">Você já se candidatou!</h3>
+                        <p class="text-gray-500 text-sm mb-2">
+                            Status: <span class="font-medium text-primary">{{ user_application.get_status_display }}</span>
+                        </p>
+                        <p class="text-gray-400 text-xs mb-4">
+                            Candidatura enviada em {{ user_application.applied_at|date:"d/m/Y" }}
+                        </p>
+                        {% if user_application.status == 'applied' %}
+                        <form action="{% url 'jobs:withdraw' user_application.pk %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit"
+                                    onclick="return confirm('Tem certeza que deseja retirar sua candidatura?')"
+                                    class="w-full px-4 py-2 border-2 border-red-300 text-red-600 font-medium rounded-xl hover:bg-red-50 transition-colors text-sm">
+                                Retirar Candidatura
+                            </button>
+                        </form>
+                        {% endif %}
+                    </div>
+
+                    {% elif not job.is_active %}
+                    <!-- Inactive Job -->
+                    <div class="text-center">
+                        <div class="inline-flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full mb-4">
+                            <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path>
+                            </svg>
+                        </div>
+                        <h3 class="font-bold text-text-primary mb-2">Vaga Fechada</h3>
+                        <p class="text-gray-500 text-sm">Esta vaga não está mais aceitando candidaturas.</p>
+                    </div>
+
+                    {% elif user.is_authenticated %}
+                    <!-- Apply Form -->
+                    <h3 class="font-bold text-text-primary mb-4 text-center">Candidate-se a esta vaga</h3>
+                    <form action="{% url 'jobs:apply' job.pk %}" method="post">
+                        {% csrf_token %}
+                        <div class="mb-4">
+                            <label for="cover_letter" class="block text-sm font-medium text-gray-700 mb-2">
+                                Carta de Apresentação (opcional)
+                            </label>
+                            <textarea name="cover_letter" id="cover_letter" rows="5"
+                                      placeholder="Conte um pouco sobre você e por que seria ideal para esta vaga..."
+                                      class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all resize-none"></textarea>
+                        </div>
+                        <button type="submit"
+                                class="w-full px-4 py-3 bg-primary text-white font-semibold rounded-xl hover:bg-primary-600 transition-colors">
+                            <span class="flex items-center justify-center">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                                </svg>
+                                Enviar Candidatura
+                            </span>
+                        </button>
+                    </form>
+
+                    {% else %}
+                    <!-- Login Required -->
+                    <div class="text-center">
+                        <div class="inline-flex items-center justify-center w-12 h-12 bg-primary/10 rounded-full mb-4">
+                            <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="font-bold text-text-primary mb-2">Faça login para se candidatar</h3>
+                        <p class="text-gray-500 text-sm mb-4">Crie sua conta gratuitamente e candidate-se a esta vaga.</p>
+                        <a href="{% url 'login' %}?next={{ request.path }}"
+                           class="w-full inline-flex items-center justify-center px-4 py-3 bg-primary text-white font-semibold rounded-xl hover:bg-primary-600 transition-colors">
+                            Entrar
+                        </a>
+                        <p class="mt-3 text-sm text-gray-500">
+                            Não tem conta? <a href="{% url 'accounts:signup' %}" class="text-primary hover:underline">Cadastre-se</a>
+                        </p>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Company Info -->
+                <div class="bg-surface rounded-xl shadow-soft p-6 border border-gray-100">
+                    <h3 class="font-bold text-text-primary mb-4">Sobre a Empresa</h3>
+                    <div class="flex items-center space-x-3 mb-4">
+                        {% if job.company.logo %}
+                        <img src="{{ job.company.logo.url }}" alt="{{ job.company.name }}" class="w-12 h-12 rounded-lg object-cover">
+                        {% else %}
+                        <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                            </svg>
+                        </div>
+                        {% endif %}
+                        <div>
+                            <h4 class="font-semibold text-text-primary">{{ job.company.name }}</h4>
+                            {% if job.company.website %}
+                            <a href="{{ job.company.website }}" target="_blank" rel="noopener" class="text-sm text-primary hover:underline">
+                                {{ job.company.website|slice:":30" }}...
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% if job.company.description %}
+                    <p class="text-gray-600 text-sm">{{ job.company.description|truncatewords:30 }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Related Jobs -->
+        {% if related_jobs %}
+        <div class="mt-12">
+            <h2 class="text-xl font-bold text-text-primary mb-6">Vagas Relacionadas</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {% for related in related_jobs %}
+                <a href="{% url 'jobs:detail' related.pk %}" class="block">
+                    <div class="bg-surface rounded-xl shadow-soft p-4 border border-gray-100 hover:shadow-md hover:border-primary/30 transition-all">
+                        <div class="flex items-center space-x-3">
+                            {% if related.company.logo %}
+                            <img src="{{ related.company.logo.url }}" alt="{{ related.company.name }}" class="w-10 h-10 rounded-lg object-cover">
+                            {% else %}
+                            <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                                <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                                </svg>
+                            </div>
+                            {% endif %}
+                            <div class="flex-1 min-w-0">
+                                <h4 class="font-semibold text-text-primary truncate">{{ related.title }}</h4>
+                                <p class="text-gray-500 text-sm">{{ related.company.name }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

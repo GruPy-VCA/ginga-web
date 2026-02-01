@@ -10,6 +10,7 @@ dependencies = [
     "django-environ>=0.12.0",
     "django-storages[s3]>=1.14.6",
     "django-taggit>=6.1.0",
+    "faker>=40.1.2",
     "gunicorn>=24.1.1",
     "pillow>=12.1.0",
     "psycopg2-binary>=2.9.11",

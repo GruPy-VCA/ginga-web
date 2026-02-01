@@ -130,11 +130,11 @@
                     </a>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <a href="#vagas" class="text-text-primary hover:text-primary font-medium transition-colors">
-                        GingaVagas
+                    <a href="{% url 'jobs:list' %}" class="text-text-primary hover:text-primary font-medium transition-colors">
+                        Vagas
                     </a>
                     <a href="#portfolio" class="text-text-primary hover:text-primary font-medium transition-colors">
-                        GingaPort
+                        Portfólios
                     </a>
                     {% if user.is_authenticated %}
                     <a href="{% url 'dashboard' %}" class="bg-primary text-white px-4 py-2 rounded-xl hover:bg-primary-600 transition-colors font-medium">

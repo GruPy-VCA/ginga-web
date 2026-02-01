@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django_bootstrap5',
     'storages',
     # Local apps
+    'apps.core',
     'apps.accounts',
     'apps.companies',
     'apps.jobs',

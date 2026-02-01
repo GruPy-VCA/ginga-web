@@ -77,7 +77,28 @@ uv run python manage.py load_techs
 
 Este comando é **idempotente** - pode ser executado múltiplas vezes sem criar duplicatas. Ele popula o banco com 100 tecnologias categorizadas (linguagens, frameworks, bancos de dados, DevOps, etc.) para uso no autocomplete.
 
-### 6. Executar o Servidor
+### 6. (Opcional) Popular com Dados de Teste
+
+Para desenvolvimento e testes, você pode popular o banco com dados fictícios:
+
+```bash
+uv run python manage.py seed_test_data
+```
+
+Este comando cria:
+- **5 Recrutadores** com 1-3 empresas cada (total: 9 empresas)
+- **10 vagas por empresa** (9 ativas + 1 inativa)
+- **20 Candidatos** (7 excelentes, 8 medianos, 5 incompletos)
+- **Candidaturas** aleatórias (3-7 por candidato com perfil)
+
+**Credenciais de teste:**
+- Senha padrão: `ginga@2024`
+- Recrutadores: `master@techcorp.com.br`, `ana.rh@inovabr.com.br`
+- Candidatos: `flavio.expert@email.com`, `carolina.dev@email.com`
+
+O comando é **idempotente** - pode ser executado múltiplas vezes sem duplicar dados.
+
+### 7. Executar o Servidor
 
 Para iniciar o projeto localmente, utilize o comando:
 
@@ -91,10 +112,13 @@ uv run manage.py runserver
 
 | Comando | Descrição |
 |---------|-----------|
-| `uv run python manage.py load_techs` | Carrega 100 tecnologias para autocomplete (idempotente) |
 | `uv run python manage.py migrate` | Executa migrações do banco de dados |
 | `uv run python manage.py createsuperuser` | Cria um usuário administrador |
+| `uv run python manage.py load_techs` | Carrega 100 tecnologias para autocomplete (idempotente) |
+| `uv run python manage.py seed_test_data` | Popula o banco com dados de teste (idempotente) |
+| `uv run python manage.py runserver` | Inicia o servidor de desenvolvimento |
 | `uv run ruff check` | Verifica qualidade do código |
+| `uv run ruff check --fix` | Corrige automaticamente problemas de lint |
 
 ---
 
