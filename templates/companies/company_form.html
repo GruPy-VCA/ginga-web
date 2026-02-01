@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ page_title|default:"Registar Empresa" }} - Ginga{% endblock %}
+
+{% block content %}
+<section class="py-12">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="mb-8">
+            <a href="{% url 'companies:dashboard' %}" class="inline-flex items-center text-gray-500 hover:text-primary transition-colors mb-4">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+                Voltar
+            </a>
+            <h1 class="text-3xl font-bold text-text-primary">{{ page_title|default:"Registar Empresa" }}</h1>
+            <p class="text-gray-600 mt-1">
+                {% if is_edit %}
+                Atualize os dados da empresa
+                {% else %}
+                Preenche os dados da tua empresa para começar a publicar vagas
+                {% endif %}
+            </p>
+        </div>
+
+        <!-- Messages -->
+        {% if messages %}
+        <div class="mb-6">
+            {% for message in messages %}
+            <div class="p-4 rounded-xl {% if message.tags == 'success' %}bg-green-50 text-green-700{% else %}bg-red-50 text-red-700{% endif %}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <form method="post" enctype="multipart/form-data" class="space-y-6">
+            {% csrf_token %}
+
+            <!-- Logo Section -->
+            <div class="bg-surface rounded-xl shadow-soft p-6 border border-gray-100">
+                <h2 class="text-lg font-bold text-text-primary mb-4">Logo da Empresa</h2>
+                
+                <div class="flex items-center space-x-6">
+                    <!-- Logo Preview -->
+                    <div class="relative" id="logo-preview-container">
+                        {% if is_edit and object.logo %}
+                        <div class="w-24 h-24 rounded-xl bg-gray-100 flex items-center justify-center border-2 border-dashed border-gray-300 hidden" id="logo-placeholder">
+                            <svg class="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                            </svg>
+                        </div>
+                        <img id="logo-preview" class="w-24 h-24 rounded-xl object-cover border-2 border-gray-100" src="{{ object.logo.url }}" alt="Logo preview">
+                        {% else %}
+                        <div class="w-24 h-24 rounded-xl bg-gray-100 flex items-center justify-center border-2 border-dashed border-gray-300" id="logo-placeholder">
+                            <svg class="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                            </svg>
+                        </div>
+                        <img id="logo-preview" class="w-24 h-24 rounded-xl object-cover border-2 border-gray-100 hidden" alt="Logo preview">
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Upload Button -->
+                    <div>
+                        <label for="id_logo" class="inline-flex items-center px-4 py-2 bg-gray-100 text-text-primary font-semibold rounded-xl hover:bg-gray-200 transition-colors cursor-pointer">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                            {% if is_edit %}Alterar logo{% else %}Escolher logo{% endif %}
+                        </label>
+                        {{ form.logo }}
+                        <p class="text-xs text-gray-500 mt-2">JPG, PNG ou GIF. Recomendado: 200x200px.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Company Info -->
+            <div class="bg-surface rounded-xl shadow-soft p-6 border border-gray-100">
+                <h2 class="text-lg font-bold text-text-primary mb-4">Informações da Empresa</h2>
+                
+                <!-- Name -->
+                <div class="mb-4">
+                    <label for="id_name" class="block text-sm font-medium text-text-primary mb-2">
+                        {{ form.name.label }} <span class="text-red-500">*</span>
+                    </label>
+                    {{ form.name }}
+                    {% if form.name.errors %}
+                    <p class="text-sm text-red-600 mt-1">{{ form.name.errors|join:", " }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- CNPJ -->
+                <div class="mb-4">
+                    <label for="id_cnpj" class="block text-sm font-medium text-text-primary mb-2">
+                        {{ form.cnpj.label }} <span class="text-red-500">*</span>
+                    </label>
+                    {{ form.cnpj }}
+                    <p class="text-xs text-gray-500 mt-1">Formato: XX.XXX.XXX/XXXX-XX</p>
+                    {% if form.cnpj.errors %}
+                    <p class="text-sm text-red-600 mt-1">{{ form.cnpj.errors|join:", " }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Website -->
+                <div class="mb-4">
+                    <label for="id_website" class="block text-sm font-medium text-text-primary mb-2">
+                        {{ form.website.label }}
+                    </label>
+                    {{ form.website }}
+                    {% if form.website.errors %}
+                    <p class="text-sm text-red-600 mt-1">{{ form.website.errors|join:", " }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Description -->
+                <div>
+                    <label for="id_description" class="block text-sm font-medium text-text-primary mb-2">
+                        {{ form.description.label }}
+                    </label>
+                    {{ form.description }}
+                    <p class="text-xs text-gray-500 mt-1">Descreva a empresa, sua missão, valores e área de atuação.</p>
+                    {% if form.description.errors %}
+                    <p class="text-sm text-red-600 mt-1">{{ form.description.errors|join:", " }}</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Submit Buttons -->
+            <div class="flex flex-col sm:flex-row gap-4">
+                <button type="submit" class="flex-1 bg-primary text-white font-semibold py-3 px-6 rounded-xl hover:bg-primary-600 transition-colors">
+                    {% if is_edit %}Salvar Alterações{% else %}Registar Empresa{% endif %}
+                </button>
+                <a href="{% url 'companies:dashboard' %}" class="flex-1 text-center bg-gray-100 text-text-primary font-semibold py-3 px-6 rounded-xl hover:bg-gray-200 transition-colors">
+                    Cancelar
+                </a>
+            </div>
+        </form>
+    </div>
+</section>
+
+<script>
+    // Logo preview
+    document.getElementById('id_logo').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('logo-preview').src = e.target.result;
+                document.getElementById('logo-preview').classList.remove('hidden');
+                const placeholder = document.getElementById('logo-placeholder');
+                if (placeholder) {
+                    placeholder.classList.add('hidden');
+                }
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
+{% endblock %}
