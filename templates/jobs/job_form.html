@@ -1,0 +1,173 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ page_title|default:"Publicar Vaga" }} - Ginga{% endblock %}
+
+{% block content %}
+<section class="py-12">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="mb-8">
+            <a href="{% url 'companies:dashboard' %}" class="inline-flex items-center text-gray-500 hover:text-primary transition-colors mb-4">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+                Voltar
+            </a>
+            <h1 class="text-3xl font-bold text-text-primary">{{ page_title|default:"Publicar Vaga" }}</h1>
+            <p class="text-gray-600 mt-1">
+                {% if is_edit %}
+                Atualize os dados da vaga
+                {% else %}
+                Preenche os detalhes da vaga para encontrar o candidato ideal
+                {% endif %}
+            </p>
+        </div>
+
+        <!-- Messages -->
+        {% if messages %}
+        <div class="mb-6">
+            {% for message in messages %}
+            <div class="p-4 rounded-xl {% if message.tags == 'success' %}bg-green-50 text-green-700{% else %}bg-red-50 text-red-700{% endif %}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <form method="post" class="space-y-6">
+            {% csrf_token %}
+
+            <!-- Company Selection -->
+            <div class="bg-surface rounded-xl shadow-soft p-6 border border-gray-100">
+                <h2 class="text-lg font-bold text-text-primary mb-4">Empresa</h2>
+                
+                <div>
+                    <label for="id_company" class="block text-sm font-medium text-text-primary mb-2">
+                        {{ form.company.label }} <span class="text-red-500">*</span>
+                    </label>
+                    {{ form.company }}
+                    <p class="text-xs text-gray-500 mt-1">Selecione a empresa que está publicando a vaga</p>
+                    {% if form.company.errors %}
+                    <p class="text-sm text-red-600 mt-1">{{ form.company.errors|join:", " }}</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Job Details -->
+            <div class="bg-surface rounded-xl shadow-soft p-6 border border-gray-100">
+                <h2 class="text-lg font-bold text-text-primary mb-4">Detalhes da Vaga</h2>
+                
+                <!-- Title -->
+                <div class="mb-4">
+                    <label for="id_title" class="block text-sm font-medium text-text-primary mb-2">
+                        {{ form.title.label }} <span class="text-red-500">*</span>
+                    </label>
+                    {{ form.title }}
+                    {% if form.title.errors %}
+                    <p class="text-sm text-red-600 mt-1">{{ form.title.errors|join:", " }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Description -->
+                <div class="mb-4">
+                    <label for="id_description" class="block text-sm font-medium text-text-primary mb-2">
+                        {{ form.description.label }} <span class="text-red-500">*</span>
+                    </label>
+                    {{ form.description }}
+                    <p class="text-xs text-gray-500 mt-1">Descreva as responsabilidades, atividades diárias e o que espera do profissional.</p>
+                    {% if form.description.errors %}
+                    <p class="text-sm text-red-600 mt-1">{{ form.description.errors|join:", " }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Requirements -->
+                <div class="mb-4">
+                    <label for="id_requirements" class="block text-sm font-medium text-text-primary mb-2">
+                        {{ form.requirements.label }}
+                    </label>
+                    {{ form.requirements }}
+                    <p class="text-xs text-gray-500 mt-1">Liste os requisitos técnicos, experiência desejada e soft skills.</p>
+                    {% if form.requirements.errors %}
+                    <p class="text-sm text-red-600 mt-1">{{ form.requirements.errors|join:", " }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Salary Range -->
+                <div>
+                    <label for="id_salary_range" class="block text-sm font-medium text-text-primary mb-2">
+                        {{ form.salary_range.label }}
+                    </label>
+                    {{ form.salary_range }}
+                    <p class="text-xs text-gray-500 mt-1">Opcional. Vagas com salário atraem mais candidatos.</p>
+                    {% if form.salary_range.errors %}
+                    <p class="text-sm text-red-600 mt-1">{{ form.salary_range.errors|join:", " }}</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Tags / Technologies -->
+            <div class="bg-surface rounded-xl shadow-soft p-6 border border-gray-100">
+                <h2 class="text-lg font-bold text-text-primary mb-4">Tecnologias</h2>
+                
+                <div>
+                    <label for="id_tags_input" class="block text-sm font-medium text-text-primary mb-2">
+                        {{ form.tags_input.label }}
+                    </label>
+                    {{ form.tags_input }}
+                    <p class="text-xs text-gray-500 mt-1">{{ form.tags_input.help_text }}</p>
+                    {% if form.tags_input.errors %}
+                    <p class="text-sm text-red-600 mt-1">{{ form.tags_input.errors|join:", " }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Tags Preview -->
+                <div id="tags-preview" class="flex flex-wrap gap-2 mt-3"></div>
+            </div>
+
+            <!-- Status -->
+            <div class="bg-surface rounded-xl shadow-soft p-6 border border-gray-100">
+                <h2 class="text-lg font-bold text-text-primary mb-4">Status</h2>
+                
+                <div class="flex items-center">
+                    {{ form.is_active }}
+                    <label for="id_is_active" class="ml-3 text-sm font-medium text-text-primary">
+                        {{ form.is_active.label }}
+                    </label>
+                </div>
+                <p class="text-xs text-gray-500 mt-2">Desmarque para salvar como rascunho sem publicar.</p>
+            </div>
+
+            <!-- Submit Buttons -->
+            <div class="flex flex-col sm:flex-row gap-4">
+                <button type="submit" class="flex-1 bg-primary text-white font-semibold py-3 px-6 rounded-xl hover:bg-primary-600 transition-colors">
+                    {% if is_edit %}Salvar Alterações{% else %}Publicar Vaga{% endif %}
+                </button>
+                <a href="{% url 'companies:dashboard' %}" class="flex-1 text-center bg-gray-100 text-text-primary font-semibold py-3 px-6 rounded-xl hover:bg-gray-200 transition-colors">
+                    Cancelar
+                </a>
+            </div>
+        </form>
+    </div>
+</section>
+
+<script>
+    // Tags preview
+    const tagsInput = document.getElementById('id_tags_input');
+    const tagsPreview = document.getElementById('tags-preview');
+
+    function updateTagsPreview() {
+        const value = tagsInput.value;
+        const tags = value.split(',').map(tag => tag.trim()).filter(tag => tag);
+        
+        tagsPreview.innerHTML = tags.map(tag => 
+            `<span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary">
+                ${tag}
+            </span>`
+        ).join('');
+    }
+
+    tagsInput.addEventListener('input', updateTagsPreview);
+    // Initial preview
+    updateTagsPreview();
+</script>
+{% endblock %}

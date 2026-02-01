@@ -20,6 +20,8 @@ urlpatterns = [
     path('accounts/', include('apps.accounts.urls', namespace='accounts')),
     # Companies URLs
     path('companies/', include('apps.companies.urls', namespace='companies')),
+    # Jobs URLs
+    path('jobs/', include('apps.jobs.urls', namespace='jobs')),
     # Django Auth URLs (login, logout)
     path('accounts/login/', auth_views.LoginView.as_view(template_name='accounts/login.html'), name='login'),
     path('accounts/logout/', auth_views.LogoutView.as_view(), name='logout'),
