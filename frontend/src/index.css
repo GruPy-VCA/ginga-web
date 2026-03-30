@@ -1,0 +1,40 @@
+@import "tailwindcss";
+
+@theme {
+  /* Primary (Verde Floresta) — espelho templates/base.html */
+  --color-primary-50: #e6f2ec;
+  --color-primary-100: #cce5d9;
+  --color-primary-200: #99cbb3;
+  --color-primary-300: #66b18d;
+  --color-primary-400: #339767;
+  --color-primary-500: #004b23;
+  --color-primary-600: #003c1c;
+  --color-primary-700: #002d15;
+  --color-primary-800: #001e0e;
+  --color-primary-900: #000f07;
+  --color-primary: #004b23;
+
+  --color-secondary-500: #0077b6;
+  --color-secondary-600: #005f92;
+  --color-secondary: #0077b6;
+
+  --color-highlight-400: #ffdf33;
+  --color-highlight-500: #ffd60a;
+  --color-highlight: #ffd60a;
+
+  --color-background: #f8fafc;
+  --color-surface: #ffffff;
+  --color-foreground: #1e293b;
+
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+
+  --shadow-soft: 0 2px 15px -3px rgb(0 0 0 / 0.07), 0 10px 20px -2px rgb(0 0 0 / 0.04);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+}

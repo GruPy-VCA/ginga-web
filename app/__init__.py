@@ -1,0 +1,1 @@
+"""Ginga FastAPI application package."""
