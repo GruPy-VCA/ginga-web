@@ -123,5 +123,13 @@ staticfiles/
 media/
 *.sqlite3
 
-# UV
-uv.lock
+# Frontend (Vite) — alinhado a frontend/.gitignore; evita commits acidentais na raiz do mono-repo
+frontend/node_modules/
+frontend/dist/
+
+# Ferramentas / caches locais
+.turbo/
+*.tsbuildinfo
+.vite/
+
+# UV (lockfile versionado para builds reproduzíveis)

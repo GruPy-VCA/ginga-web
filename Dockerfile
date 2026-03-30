@@ -1,44 +1,14 @@
-# Dockerfile for Ginga Django Application
-FROM python:3.12-slim
+# Imagem para AWS Lambda (container): base oficial + deps via pip (sem `uv run` em runtime).
+# Compose local: use Dockerfile.dev (ver docker-compose.yml).
+FROM public.ecr.aws/lambda/python:3.12
 
-# Set environment variables
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
-ENV UV_SYSTEM_PYTHON=1
+RUN pip install --no-cache-dir uv
 
-# Set work directory
-WORKDIR /app
+COPY pyproject.toml uv.lock ./
+RUN uv export --frozen --no-dev --no-editable -o requirements.txt && \
+    pip install --no-cache-dir -r requirements.txt
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    curl \
-    libpq-dev \
-    gcc \
-    && rm -rf /var/lib/apt/lists/*
+COPY app/ ./app/
+COPY lambda_handler.py .
 
-# Install UV
-RUN curl -LsSf https://astral.sh/uv/install.sh | sh
-ENV PATH="/root/.local/bin:$PATH"
-
-# Copy project files
-COPY pyproject.toml uv.lock* ./
-
-# Install Python dependencies
-RUN uv sync --frozen --no-dev
-
-# Copy the rest of the application
-COPY . .
-
-# Collect static files
-RUN uv run python manage.py collectstatic --noinput || true
-
-# Create non-root user for security
-RUN adduser --disabled-password --gecos '' appuser && \
-    chown -R appuser:appuser /app
-USER appuser
-
-# Expose port
-EXPOSE 8000
-
-# Run the application
-CMD ["uv", "run", "gunicorn", "--bind", "0.0.0.0:8000", "core.wsgi:application"]
+CMD ["lambda_handler.handler"]

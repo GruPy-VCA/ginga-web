@@ -1,151 +1,87 @@
-# Ginga
+# Ginga API
 
 ![Ginga Home](docs/images/ginga-home.png)
 
-## Objetivo do Projeto
+API REST do **Ginga** em **FastAPI**: PostgreSQL assíncrono (SQLAlchemy 2 + **asyncpg**), autenticação **JWT AWS Cognito** (JWKS), uploads via **S3** (URLs assinadas), deploy em **AWS Lambda** com **Mangum** (imagem no **ECR**), no mesmo padrão do projeto pet-control.
 
-O **Ginga** é uma plataforma *open source* desenvolvida para conectar talentos de tecnologia a oportunidades de mercado. O projeto divide-se em dois módulos principais:
+O schema usa prefixo `api_*` nas tabelas para conviver com outros consumidores no mesmo PostgreSQL, se necessário.
 
-* **GingaPort:** Focado no profissional, permitindo a criação de portfólios técnicos robustos com integração à API do GitHub.
-* **GingaVagas:** Focado em empresas, permitindo a publicação de vagas com transparência salarial e requisitos técnicos categorizados por tags.
+## Repositório
 
----
+- **Código da API:** `app/`, `lambda_handler.py`, `alembic.ini`, `scripts/`.
+- **`frontend/`:** interface web (**React**, Vite + TypeScript + Tailwind), login Cognito (Amplify v6) e cliente HTTP com Bearer (ID token). Ver [frontend/README.md](frontend/README.md).
+- **Migração de dados legados:** [docs/DATA_MIGRATION.md](docs/DATA_MIGRATION.md).
 
-## Tecnologias Utilizadas
+## Frontend (React)
 
-O projeto utiliza um stack moderno focado em performance e produtividade:
+- **Pasta:** `frontend/`.
+- **Variáveis:** copie `frontend/.env.example` para `frontend/.env` e preencha `VITE_API_BASE_URL`, `VITE_AWS_REGION`, `VITE_COGNITO_USER_POOL_ID`, `VITE_COGNITO_USER_POOL_CLIENT_ID` (mesmos conceitos dos outputs Terraform `ginga_cognito_*` / variáveis `COGNITO_*` da API).
+- **CORS em produção:** a API usa `FRONTEND_URL` (Lambda / env) para a origem permitida. Defina com a URL exata do app React em produção (ex.: `https://app.exemplo.com`); em testes locais pode usar `http://localhost:5173` ou `*` conforme a política do ambiente.
 
-* **Linguagem:** Python 3.12+.
-* **Framework Web:** Django 6.0+.
-* **Gestão de Pacotes:** [UV](https://www.google.com/search?q=https://astral.sh/uv/) (substituto rápido para o pip).
-* **Banco de Dados:** PostgreSQL.
-* **CSS:** Tailwind CSS (via CDN no template base).
-* **Linting/Formatting:** Ruff.
-* **Containerização:** Docker e Docker Compose.
+## Stack
 
----
+- Python 3.12+
+- [uv](https://docs.astral.sh/uv/)
+- PostgreSQL
+- Ruff
 
-## Como Instalar e Executar Localmente (via UV)
-
-### Pré-requisitos
-
-1. Ter o **UV** instalado em sua máquina.
-2. PostgreSQL instalado ou Docker para rodar o banco de dados.
-
-### 1. Clonar o Repositório
-
-```bash
-git clone <url-do-seu-repositorio>
-cd ginga-web
-
-```
-
-### 2. Configurar Variáveis de Ambiente
-
-Copie o arquivo de exemplo e ajuste os valores necessários (como credenciais do banco):
+## Configuração
 
 ```bash
 cp .env.example .env
-
 ```
 
-Certifique-se de que o `DATABASE_URL` no `.env` aponta para sua instância local do Postgres.
+Principais variáveis: `DATABASE_URL` (`postgresql+asyncpg://...`), `COGNITO_*`, `FRONTEND_URL`, `S3_*`. Em desenvolvimento, `DEV_AUTH_BYPASS=true` + `DEV_AUTH_BYPASS_SECRET` permitem testar sem Cognito (nunca em produção).
 
-### 3. Instalar Dependências e Sincronizar o Ambiente
-
-O UV gerencia o ambiente virtual automaticamente:
+## Instalação e execução local
 
 ```bash
 uv sync
-
+uv run alembic upgrade head
+uv run python scripts/load_techs.py
+uv run uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-### 4. Executar Migrações
+- OpenAPI: `http://localhost:8000/docs`
+- Health: `GET http://localhost:8000/health`
+
+## Docker Compose (API + Postgres)
 
 ```bash
-uv run manage.py migrate
-
+docker compose up --build
 ```
 
-### 5. Carregar Dados Iniciais
+O serviço `api` roda `alembic upgrade head` antes do Uvicorn. Ajuste `.env` se necessário; o compose define `DATABASE_URL` para o serviço `db`.
 
-Carregue as tecnologias para o sistema de autocomplete de vagas e competências:
+## Migrações (Alembic)
 
 ```bash
-uv run python manage.py load_techs
+uv run alembic upgrade head
 ```
 
-Este comando é **idempotente** - pode ser executado múltiplas vezes sem criar duplicatas. Ele popula o banco com 100 tecnologias categorizadas (linguagens, frameworks, bancos de dados, DevOps, etc.) para uso no autocomplete.
-
-### 6. (Opcional) Popular com Dados de Teste
-
-Para desenvolvimento e testes, você pode popular o banco com dados fictícios:
+## Seed de tags (autocomplete)
 
 ```bash
-uv run python manage.py seed_test_data
+uv run python scripts/load_techs.py
 ```
 
-Este comando cria:
-- **5 Recrutadores** com 1-3 empresas cada (total: 9 empresas)
-- **10 vagas por empresa** (9 ativas + 1 inativa)
-- **20 Candidatos** (7 excelentes, 8 medianos, 5 incompletos)
-- **Candidaturas** aleatórias (3-7 por candidato com perfil)
+Idempotente.
 
-**Credenciais de teste:**
-- Senha padrão: `ginga@2024`
-- Recrutadores: `master@techcorp.com.br`, `ana.rh@inovabr.com.br`
-- Candidatos: `flavio.expert@email.com`, `carolina.dev@email.com`
+## Deploy (AWS)
 
-O comando é **idempotente** - pode ser executado múltiplas vezes sem duplicar dados.
+Infraestrutura (ECR, Lambda Function URL, Cognito, S3, database `ginga` no RDS existente) está no repositório **marujos-terraform** (`ginga_*.tf`). Fluxo típico:
 
-### 7. Executar o Servidor
+1. `docker build -t ginga-api .` e push da imagem para o ECR `ginga-api`.
+2. Atualizar a Lambda para a nova imagem (ou `terraform apply` após definir a tag).
+3. Rodar `alembic upgrade head` contra o `DATABASE_URL` de produção (CI ou máquina com acesso ao RDS).
 
-Para iniciar o projeto localmente, utilize o comando:
+## Qualidade
 
 ```bash
-uv run manage.py runserver
+uv run ruff check app lambda_handler.py scripts
 ```
-
----
-
-## Comandos de Gerenciamento
-
-| Comando | Descrição |
-|---------|-----------|
-| `uv run python manage.py migrate` | Executa migrações do banco de dados |
-| `uv run python manage.py createsuperuser` | Cria um usuário administrador |
-| `uv run python manage.py load_techs` | Carrega 100 tecnologias para autocomplete (idempotente) |
-| `uv run python manage.py seed_test_data` | Popula o banco com dados de teste (idempotente) |
-| `uv run python manage.py runserver` | Inicia o servidor de desenvolvimento |
-| `uv run ruff check` | Verifica qualidade do código |
-| `uv run ruff check --fix` | Corrige automaticamente problemas de lint |
-
----
 
 ## Contribuição
 
-Adoramos contribuições! Para contribuir com o Ginga, siga estes passos:
-
-1. Faça um **Fork** do projeto.
-2. Crie uma branch para sua funcionalidade (`git checkout -b feature/minha-feature`).
-3. Desenvolva suas alterações.
-4. Certifique-se de que o código segue os padrões do projeto (veja a seção Ruff abaixo).
-5. Envie um **Pull Request (PR)** descrevendo suas mudanças detalhadamente.
-
----
-
-## Qualidade de Código com Ruff
-
-Antes de realizar qualquer commit ou solicitar um PR, você **deve** executar o seguinte comando:
-
-```bash
-uv run ruff check
-
-```
-
-### Por que executar o Ruff?
-
-O **Ruff** é utilizado neste projeto para garantir a consistência do código. Ele atua como:
-
-* **Linter:** Identifica erros de sintaxe, variáveis não utilizadas e más práticas.
-* **Formatter:** Garante que todos os colaboradores sigam o mesmo estilo de escrita (PEP 8), facilitando a leitura e revisão do código por outros membros da comunidade.
+1. Fork e branch (`feature/...`).
+2. `uv run ruff check` antes do PR.
